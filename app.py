@@ -5,37 +5,47 @@ from flask import Flask, jsonify, request
 app = Flask(__name__)
 
 TELNYX_API_KEY = os.environ.get("TELNYX_API_KEY")
-AUDIO_URL = "https://your-username.github.io/your-repo/greeting.mp3"  # Update later with your GitHub Pages link
+# Replace this with your exact raw file URL from GitHub
+AUDIO_URL = "https://raw.githubusercontent.com/thekingwhispers/business-ivr-app/main/Doorbell_sound_effect_KLICKAU.mp3"
 
 
 @app.route("/webhook", methods=["POST"])
-def telnyx_webhook():
-  data = request.json.get("data", {})
-  event_type = data.get("event_type")
-  payload = data.get("payload", {})
-  call_control_id = payload.get("call_control_id")
+def webhook():
+  data = request.json
+  event_type = data.get("data", {}).get("event_type")
+  payload = data.get("data", {}).get("payload", {})
 
-  headers = {
-      "Authorization": f"Bearer {TELNYX_API_KEY}",
-      "Content-Type": "application/json",
-  }
-
-  # Answer incoming call
+  # When a call starts ringing your toll-free number
   if event_type == "call.initiated":
-    url = f"https://api.telnyx.com/v2/calls/{call_control_id}/actions/answer"
-    requests.post(url, headers=headers)
+    call_control_id = payload.get("call_control_id")
 
-  # Play greeting audio on connection
+    # Answer the call automatically
+    answer_url = (
+        f"https://api.telnyx.com/v2/calls/{call_control_id}/actions/answer"
+    )
+    headers = {
+        "Authorization": f"Bearer {TELNYX_API_KEY}",
+        "Content-Type": "application/json",
+    }
+    requests.post(answer_url, headers=headers)
+
+  # Once the call is officially answered, play your custom audio file
   elif event_type == "call.answered":
-    url = (
+    call_control_id = payload.get("call_control_id")
+
+    playback_url = (
         f"https://api.telnyx.com/v2/calls/{call_control_id}/actions/playback_start"
     )
-    body = {"audio_url": AUDIO_URL, "loop": 1}
-    requests.post(url, headers=headers, json=body)
+    headers = {
+        "Authorization": f"Bearer {TELNYX_API_KEY}",
+        "Content-Type": "application/json",
+    }
+    body = {"audio_url": AUDIO_URL}
+    requests.post(playback_url, json=body, headers=headers)
 
   return jsonify({"status": "success"}), 200
 
 
 if __name__ == "__main__":
-  app.run(host="0.0.0.0", port=5000)
+  app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
   
