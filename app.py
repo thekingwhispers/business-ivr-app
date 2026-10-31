@@ -6,7 +6,8 @@ app = Flask(__name__)
 
 TELNYX_API_KEY = os.environ.get("TELNYX_API_KEY")
 # Replace this with your exact raw file URL from GitHub
-AUDIO_URL = "https://raw.githubusercontent.com/thekingwhispers/business-ivr-app/main/Doorbell_sound_effect_KLICKAU.mp3"
+AUDIO_URL = "https://raw.githubusercontent.com/thekingwhispers/business-ivr-app/main/speedy_delivery.mp3"
+
 
 
 @app.route("/webhook", methods=["POST"])
