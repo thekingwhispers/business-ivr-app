@@ -8,6 +8,11 @@ TELNYX_API_KEY = os.environ.get("TELNYX_API_KEY")
 AUDIO_URL = "https://raw.githubusercontent.com/thekingwhispers/business-ivr-app/main/speedy_delivery.mp3"
 
 
+@app.route("/")
+def home():
+  return "IVR Bot is online!", 200
+
+
 @app.route("/webhook", methods=["POST"])
 def webhook():
   data = request.json
