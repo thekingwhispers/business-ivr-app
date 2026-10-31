@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Environment variables from Render
 TELNYX_API_KEY = os.getenv("TELNYX_API_KEY")
-MY_CELL_PHONE = os.getenv("MY_CELL_PHONE", "+12055550199")  # Replace or set in Render env vars
+MY_CELL_PHONE = os.getenv("MY_CELL_PHONE", "+13506662625")  # Replace or set in Render env vars
 
 HEADERS = {
     "Authorization": f"Bearer {TELNYX_API_KEY}",
