@@ -5,9 +5,7 @@ from flask import Flask, jsonify, request
 app = Flask(__name__)
 
 TELNYX_API_KEY = os.environ.get("TELNYX_API_KEY")
-# Replace this with your exact raw file URL from GitHub
 AUDIO_URL = "https://raw.githubusercontent.com/thekingwhispers/business-ivr-app/main/speedy_delivery.mp3"
-
 
 
 @app.route("/webhook", methods=["POST"])
@@ -42,7 +40,8 @@ def webhook():
         "Content-Type": "application/json",
     }
     body = {"audio_url": AUDIO_URL}
-    requests.post(playback_url, json=body, headers=headers)
+    response = requests.post(playback_url, json=body, headers=headers)
+    print("Playback response:", response.status_code, response.text)
 
   return jsonify({"status": "success"}), 200
 
