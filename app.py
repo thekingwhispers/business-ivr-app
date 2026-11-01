@@ -61,10 +61,10 @@ def handle_webhook():
     elif event_type in ["call.dtmf.received", "call.gather.ended"]:
         digit = payload.get('digits') or payload.get('digit')
 
-                # Option 1: Play custom audio file for Extension 1
+                        # Option 1: Play custom audio file for Extension 1
         if digit == "1":
             audio_payload = {
-                "audio_url": "https://business-ivr-app-1.onrender.com/audio_1pressed.mp3",
+                "audio_url": "https://raw.githubusercontent.com/thekingwhispers/business-ivr-app-1/main/audio_1pressed.mp3",
                 "target_legs": "self"
             }
             requests.post(
@@ -72,6 +72,7 @@ def handle_webhook():
                 json=audio_payload,
                 headers=HEADERS
             )
+
 
         # Option 2: Send caller an SMS with info & hang up
         elif digit == "2":
