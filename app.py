@@ -71,7 +71,7 @@ def handle_webhook():
             
             # 2. Start playing Extension 1 custom audio track
             audio_payload = {
-                "audio_url": "https://raw.githubusercontent.com/thekingwhispers/business-ivr-app-1/main/audio_1pressed.mp3",
+                "audio_url": "https://raw.githubusercontent.com/thekingwhispers/business-ivr-app/main/audio_1pressed.mp3",
                 "target_legs": "self"
             }
             requests.post(
