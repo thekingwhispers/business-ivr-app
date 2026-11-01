@@ -61,10 +61,17 @@ def handle_webhook():
     elif event_type in ["call.dtmf.received", "call.gather.ended"]:
         digit = payload.get('digits') or payload.get('digit')
 
-        # Option 1: Forward call live to your personal phone
+                # Option 1: Play custom audio file for Extension 1
         if digit == "1":
-            transfer_payload = {"to": MY_CELL_PHONE}
-            requests.post(f"https://api.telnyx.com/v2/calls/{call_control_id}/actions/transfer", json=transfer_payload, headers=HEADERS)
+            audio_payload = {
+                "audio_url": "https://business-ivr-app-1.onrender.com/audio_1presses.mp3",
+                "target_legs": "self"
+            }
+            requests.post(
+                f"https://api.telnyx.com/v2/calls/{call_control_id}/actions/playback_start",
+                json=audio_payload,
+                headers=HEADERS
+            )
 
         # Option 2: Send caller an SMS with info & hang up
         elif digit == "2":
