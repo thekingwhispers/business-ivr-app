@@ -64,7 +64,7 @@ def handle_webhook():
                 # Option 1: Play custom audio file for Extension 1
         if digit == "1":
             audio_payload = {
-                "audio_url": "https://business-ivr-app-1.onrender.com/audio_1presses.mp3",
+                "audio_url": "https://business-ivr-app-1.onrender.com/audio_1pressed.mp3",
                 "target_legs": "self"
             }
             requests.post(
