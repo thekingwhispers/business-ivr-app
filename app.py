@@ -61,8 +61,15 @@ def handle_webhook():
     elif event_type in ["call.dtmf.received", "call.gather.ended"]:
         digit = payload.get('digits') or payload.get('digit')
 
-                        # Option 1: Play custom audio file for Extension 1
+        # Option 1: Stop main greeting and play custom audio for Extension 1
         if digit == "1":
+            # 1. Immediately stop the ongoing main IVR greeting
+            requests.post(
+                f"https://api.telnyx.com/v2/calls/{call_control_id}/actions/playback_stop",
+                headers=HEADERS
+            )
+            
+            # 2. Start playing Extension 1 custom audio track
             audio_payload = {
                 "audio_url": "https://raw.githubusercontent.com/thekingwhispers/business-ivr-app-1/main/audio_1pressed.mp3",
                 "target_legs": "self"
@@ -72,6 +79,7 @@ def handle_webhook():
                 json=audio_payload,
                 headers=HEADERS
             )
+
 
 
         # Option 2: Send caller an SMS with info & hang up
